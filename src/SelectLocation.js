@@ -1,5 +1,10 @@
 import React, { useState } from "react";
 import ShowFlights from "./ShowFlights";
+import {
+  Select,
+  Button,
+  Container,
+} from "@chakra-ui/react";
 
 export default function SelectLocation() {
   const [from, setFrom] = useState("");
@@ -12,33 +17,27 @@ export default function SelectLocation() {
     setShowFlight(false);
   }
   return (
-    <div className="container">
-      <select onChange={locationHandler}>
-        <option value="none" selected disabled hidden>
-          Select an Option
-        </option>
+    <Container>
+      <Select onChange={locationHandler} placeholder='Select Departure'  bg='tomato'>
         {fromlocation.map((loc, i) => (
           <option value={loc}>{loc}</option>
         ))}
-      </select>
+      </Select>
       &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-      <select onChange={(e) => setTo(e.target.value)}>
-        <option value="none" selected disabled hidden>
-          Select an Option
-        </option>
+      <Select onChange={(e) => setTo(e.target.value)} placeholder='Select Destination'  bg='green'>
         {fromlocation.map((loc, i) => {
           if (loc !== from) {
             return <option value={loc}>{loc}</option>;
           }
         })}
-      </select>
+      </Select>
       <br />
       <br />
       {/* button to search flights */}
-      <button onClick={() => setShowFlight(true)}>Search</button>
+      <Button onClick={() => setShowFlight(true)}>Search</Button>
       <br />
       <br />
       {showFlight && <ShowFlights to={to} from={from} />}
-    </div>
+    </Container>
   );
 }

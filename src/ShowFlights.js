@@ -1,6 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { flightData } from "./flightData";
+import { fData } from "./Admin";
 import "./styles.css";
+import {
+  Button,
+  Input,
+  Heading
+} from "@chakra-ui/react";
 
 export default function ShowFlights({ to: destination, from: arrival }) {
   const [seatAdded, setSeatAdded] = useState(0);
@@ -24,8 +30,15 @@ export default function ShowFlights({ to: destination, from: arrival }) {
       });
       return updatedArray;
     });
+
+    flightData.forEach((flight,ind) => {
+      if(flight.id === availableFlights[i]['id']){
+        flight.seatBooked += seatAdded;
+      }
+    })
+    fData(flightData)
     console.log(seatAdded);
-    console.log("calling");
+    console.log(flightData);
   }
 
   console.log(availableFlights);
@@ -35,14 +48,14 @@ export default function ShowFlights({ to: destination, from: arrival }) {
         {availableFlights.map((flight, i) => {
           return (
             <div className="Child">
-              <h3>{flight.name}</h3>
+              <Heading size='sm'>{flight.name}</Heading>
               <span>
-                <button onClick={() => setSeatAdded(seatAdded - 1)}>-</button>
-                <input type="text" value={seatAdded} />
-                <button onClick={() => setSeatAdded(seatAdded + 1)}>+</button>
+                <Button onClick={() => setSeatAdded(seatAdded - 1)}>-</Button>
+                <Input type="text" value={seatAdded} width='3rem' mx={2} />
+                <Button onClick={() => setSeatAdded(seatAdded + 1)}>+</Button>
               </span>
               <p>{`Seat Left: ${flight.totalSeat - flight.seatBooked}`}</p>
-              <button onClick={() => bookTicket(i)}>Book Now</button>
+              <Button onClick={() => bookTicket(i)}>Book Now</Button>
             </div>
           );
         })}
